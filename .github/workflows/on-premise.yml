@@ -53,20 +53,17 @@ jobs:
         run: | 
           cd helm 
           export IMAGE_TAG=${GITHUB_SHA::7}
-
           envsubst < values.template > values.yaml
 
-          cat values.yaml
+          helm upgrade --install ${GITHUB_REPOSITORY_NAME} . --namespace  sis-${GITHUB_REF_NAME}-ms --create-namespace
 
-          # kubectl create configmap ${GITHUB_REPOSITORY_NAME}-config --from-env-file=.env.kube -n ${NAME_SPACE} --dry-run=client -o yaml | kubectl apply -f -
+          kubectl create configmap ${GITHUB_REPOSITORY_NAME}-config --from-env-file=.env.kube -n ${NAME_SPACE} --dry-run=client -o yaml | kubectl apply -f -
 
-          #kubectl apply -f ./
-
-          # kubectl create secret docker-registry ghcr-secret \
-          #   --docker-server=ghcr.io \
-          #   --docker-username=${{ github.actor }} \
-          #   --docker-password=${{ secrets.CONTAINER_REGISTRY_PAT_GITHUB }} \
-          #   --namespace=${NAME_SPACE} 
+          kubectl create secret docker-registry ghcr-secret \
+            --docker-server=ghcr.io \
+            --docker-username=${{ github.actor }} \
+            --docker-password=${{ secrets.CONTAINER_REGISTRY_PAT_GITHUB }} \
+            --namespace=${NAME_SPACE} 
 
           echo "Domain: http://${GITHUB_REPOSITORY_NAME}.${GITHUB_REF_NAME}.${NAME_SPACE}.lab"
           echo "Domain: https://${GITHUB_REPOSITORY_NAME}.${GITHUB_REF_NAME}.${NAME_SPACE}.lab"
