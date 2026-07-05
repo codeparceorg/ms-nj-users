@@ -42,7 +42,7 @@ jobs:
 
   deploy:
     runs-on: kubernetes #Runner on-premise
-    needs: docker-publish
+    #needs: docker-publish
     env:
       GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
       GITHUB_ORG: ${{ github.repository_owner }}
