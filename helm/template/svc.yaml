@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    namespace: {{ .Values.namespace }}
+    repo: {{ .Values.name }}
+    ##----
+    name: {{ .Values.metadata.name }}
+    environment: {{ .Values.metadata.environment }}
+    owner: {{ .Values.metadata.owner }}
+    commit: {{ .Values.metadata.commit }}
+
+spec:
+  selector:
+    app: {{ .Values.name }}
+  ports:
+    - name: entry         # 🔹 nombre obligatorio y único
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+
+  type: ClusterIP

@@ -16,7 +16,7 @@ import { UsersModule } from './modules/users/users.module';
         username: config.get('MS_DB_USER'),
         password: config.get('MS_DB_PASSWORD'),
         database: config.get('MS_DB_NAME'),
-        ssl: true,
+        ssl: false,
         autoLoadEntities: true,
         synchronize: true, 
       }),

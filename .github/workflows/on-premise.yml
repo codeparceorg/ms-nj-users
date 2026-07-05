@@ -1,0 +1,71 @@
+name: On-Premise deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+  #workflow_dispatch:
+
+jobs:
+  # build:
+  #   runs-on: ubuntu-latest #Runner cloud (default)
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0 
+
+  #     - name: Build in node
+  #       uses: codeparce/ci-workflows/.github/actions/node/build@v1
+  #       with:
+  #         type: web-build
+  #         target: dist
+
+  # docker-publish:
+  #   needs: build
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   runs-on: ubuntu-latest  #Runner cloud (default)
+  #   steps:
+  #     - uses: actions/checkout@v4
+          
+  #     - name: Download build artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: web-build
+  #         path: dist
+
+  #     - name: Publish to Docker Hub
+  #       uses: codeparce/ci-workflows/.github/actions/registry@v1
+  #       with:
+  #         container-access-token: ${{ secrets.CONTAINER_REGISTRY_PAT_GITHUB }}
+
+  deploy:
+    runs-on: kubernetes #Runner on-premise
+    needs: docker-publish
+    env:
+      GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
+      GITHUB_ORG: ${{ github.repository_owner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Kubernetes
+        run: | 
+          cd helm 
+
+          envsubst < values.template > values.yaml
+
+          cat values.yaml
+
+          # kubectl create configmap ${GITHUB_REPOSITORY_NAME}-config --from-env-file=.env.kube -n ${NAME_SPACE} --dry-run=client -o yaml | kubectl apply -f -
+
+          #kubectl apply -f ./
+
+          # kubectl create secret docker-registry ghcr-secret \
+          #   --docker-server=ghcr.io \
+          #   --docker-username=${{ github.actor }} \
+          #   --docker-password=${{ secrets.CONTAINER_REGISTRY_PAT_GITHUB }} \
+          #   --namespace=${NAME_SPACE} 
+
+          echo "Domain: http://${GITHUB_REPOSITORY_NAME}.${GITHUB_REF_NAME}.${NAME_SPACE}.lab"
+          echo "Domain: https://${GITHUB_REPOSITORY_NAME}.${GITHUB_REF_NAME}.${NAME_SPACE}.lab"

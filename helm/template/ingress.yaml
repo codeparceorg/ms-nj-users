@@ -1,0 +1,27 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: "{{ .Values.name }}-ingress" 
+  namespace: {{ .Values.namespace }}
+  labels:
+    namespace: {{ .Values.namespace }}
+    repo: {{ .Values.name }}
+    ##----
+    name: {{ .Values.metadata.name }}
+    environment: {{ .Values.metadata.environment }}
+    owner: {{ .Values.metadata.owner }}
+    commit: {{ .Values.metadata.commit }}
+
+
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: {{ .Values.ingress.entry }}
+
+spec:
+  entryPoints:
+    - {{ .Values.ingress.entry }}
+  routes:
+    - match: Host(`{{ .Values.ingress.host }}`)
+      kind: Rule
+      services:
+        - name: {{ .Values.name }}-service
+          port: {{ .Values.service.port }}
