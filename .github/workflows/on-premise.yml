@@ -67,6 +67,6 @@ jobs:
 
           echo "Deployment completed successfully."
           
-          echo "Domain: http://microservicio.${GITHUB_REF_NAME}.lab"
+          echo "Domain: http://microservicio.sis-${GITHUB_REF_NAME}-ms.lab/users"
           SVC_NAME=$(kubectl get svc -n sis-main-ms -o jsonpath='{.items[*].metadata.name}')
-          echo "Domain interno: ${SVC_NAME}:8080"
+          echo "Domain interno: ${SVC_NAME}.sis-${GITHUB_REF_NAME}-ms.svc.cluster.local/users"
