@@ -5,10 +5,9 @@ import { GetUsersService } from '../../application/use-cases/get-users.service';
 import { GetUserService } from '../../application/use-cases/get-user.service';
 import { UpdateUserService } from '../../application/use-cases/update-user.service';
 import { DeleteUserService } from '../../application/use-cases/delete-user.service';
-import { LoginUserService } from '../../application/use-cases/login-user.service';
 import { CreateUserDto } from '../../application/dtos/create-user.dto';
 import { UpdateUserDto } from '../../application/dtos/update-user.dto';
-import { LoginUserDto } from '../../application/dtos/login-user.dto';
+
 
 @Controller('users')
 export class UserController {
@@ -18,7 +17,6 @@ export class UserController {
     private readonly getUser: GetUserService,
     private readonly updateUser: UpdateUserService,
     private readonly deleteUser: DeleteUserService,
-    private readonly loginUser: LoginUserService,
     private health: HealthCheckService,
     private db: TypeOrmHealthIndicator,
   ) {}
@@ -31,12 +29,7 @@ export class UserController {
     ]);
   }
 
-  @Post('login')
-  login(@Body() dto: LoginUserDto) {
-    return this.loginUser.execute(dto.email, dto.password);
-  }
-
-  @Post()
+  @Post('save')
   create(@Body() dto: CreateUserDto) {
     return this.createUser.execute(dto);
   }

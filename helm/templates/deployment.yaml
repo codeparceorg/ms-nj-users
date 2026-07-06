@@ -34,7 +34,8 @@ spec:
           volumeMounts:
           - name: env-file
             mountPath: /app/.env
-            subPath: .env
+            #subPath: .env
+
           resources:
             limits:
               cpu: "1"

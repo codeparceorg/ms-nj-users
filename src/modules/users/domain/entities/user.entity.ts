@@ -1,16 +1,21 @@
 export class User {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    createdAt: Date;
+    id!: string;
+    full_name!: string;
+    email!: string;
+    phone ?: string;
+    address ?: string;
+    city!: string;
+    avatar_url ?: string;
+    createdAt?: Date;
   
-    static create(name: string, email: string, password: string): User {
+    static create(full_name: string, email: string, phone: string, address: string, city: string , avatar_url?: string): User {
       const user = new User();
-      user.name = name;
+      user.full_name = full_name;
       user.email = email;
-      user.password = password;
-      user.createdAt = new Date();
+      user.phone = phone;
+      user.address = address;
+      user.avatar_url = avatar_url;
+      user.city = city;
       return user;
     }
   }
