@@ -28,6 +28,9 @@ spec:
       containers:
         - name: {{ .Values.name }}
           image: {{ .Values.container.image }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.name }}-config
           ports:
             - containerPort: {{ .Values.container.port }}
           resources:
