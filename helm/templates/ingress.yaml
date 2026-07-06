@@ -19,7 +19,7 @@ spec:
   entryPoints:
     - {{ .Values.ingress.entry }}
   routes:
-    - match: Host(`{{ .Values.ingress.host }}`)
+    - match: Host(`{{ .Values.ingress.host }}`) && PathPrefix(`{{ .Values.ingress.path }}`)
       kind: Rule
       services:
         - name: {{ .Values.name }}-service

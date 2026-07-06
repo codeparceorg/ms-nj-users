@@ -17,7 +17,8 @@ service:
   # Red
 ingress:
   entry: "web"
-  host: "${GITHUB_REPOSITORY_NAME}.sis-${GITHUB_REF_NAME}-ms.lab"
+  host: "microservicio.sis-${GITHUB_REF_NAME}-ms.lab"
+  path: /users
 
   # Contenedor
 container:
