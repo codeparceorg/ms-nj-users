@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.name }}-env-file
 data:
-{{- (.Files.Glob ".env").AsConfig | indent 4 }}
+{{ (.Files.Glob ".env").AsConfig | nindent 2 }}
