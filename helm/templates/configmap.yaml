@@ -4,4 +4,4 @@ metadata:
   name: {{ .Values.name }}-env-file
 data:
   .env: |
-{{ (.Files.Glob ".env.helm").AsConfig | indent 4 }}
+{{ (.Files.Glob ".env").AsConfig | indent 4 }}
