@@ -60,3 +60,5 @@ jobs:
 
       - name: Actions for on-premise deploy
         uses: codeparce/ci-workflows/.github/actions/on-premise/ms@v1
+        with:
+          container-access-token: ${{ secrets.CONTAINER_REGISTRY_PAT_GITHUB }}
