@@ -62,7 +62,7 @@ jobs:
         run: | 
           mv env.template helm-template/ms/.env && cd helm-template/ms
           
-          IMAGE_TAG=${GITHUB_SHA::7}
+          export IMAGE_TAG=${GITHUB_SHA::7}
 
           envsubst < values.template > values.yaml
           echo "Map values.yaml created."
