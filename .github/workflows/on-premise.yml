@@ -60,7 +60,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: | 
-          ls -al
-          ls -al helm-template 
-          mv env.template helm-template/.env
-          cd helm-template && script.sh
+          mv env.template helm-template/ms/.env
+          cd helm-template/ms && ./script.sh
