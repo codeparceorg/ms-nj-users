@@ -48,6 +48,7 @@ jobs:
       GITHUB_ORG: ${{ github.repository_owner }}
       SVC_NAME: ${{ github.event.repository.name }}-svc
       NS: sis-${{ github.ref_name  }}-ms
+      IMAGE_TAG: ${{ github.sha::7 }}
     steps:
       - uses: actions/checkout@v4
 
