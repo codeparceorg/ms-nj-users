@@ -21,7 +21,7 @@ export class CreateUserDto {
   city!: string;
 
   @IsString()
-  avatar_url?: string | 'https://avatars.githubusercontent.com/u/91216501';
+  avatar_url!: string | 'https://avatars.githubusercontent.com/u/91216501';
 
   @IsString()
   @IsNotEmpty()

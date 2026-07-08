@@ -5,7 +5,7 @@ export class User {
     phone ?: string;
     address ?: string;
     city!: string;
-    avatar_url ?: string;
+    avatar_url!: string ;
     createdAt?: Date;
     auth_token_id!: string;
 
@@ -15,7 +15,7 @@ export class User {
       user.email = email;
       user.phone = phone;
       user.address = address;
-      user.avatar_url = avatar_url;
+      user.avatar_url = avatar_url || 'https://avatars.githubusercontent.com/u/91216501';
       user.auth_token_id = auth_token_id;
       user.city = city;
       return user;
