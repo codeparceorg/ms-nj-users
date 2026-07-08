@@ -20,7 +20,4 @@ export class CreateUserDto {
   @IsNotEmpty()
   city!: string;
 
-  @IsString()
-  avatar_url?: string;
-
 }
