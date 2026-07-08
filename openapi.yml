@@ -1,0 +1,322 @@
+openapi: "3.0.3"
+info:
+  title: ext-prac-ms-users
+  description: Microservicio de gestión de usuarios
+  version: "1.0.0"
+  contact:
+    name: DevSU
+servers:
+  - url: http://localhost:8080
+    description: Desarrollo local
+
+paths:
+  /:
+    get:
+      summary: Health check básico
+      operationId: getHello
+      responses:
+        "200":
+          description: Respuesta exitosa
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Hello World!
+
+  /users/health:
+    get:
+      summary: Health check con estado de la base de datos
+      operationId: checkUsersHealth
+      tags: [Health]
+      responses:
+        "200":
+          description: Servicio saludable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthCheckResult"
+        "503":
+          description: Servicio no saludable
+
+  /users/save:
+    post:
+      summary: Crear un nuevo usuario
+      operationId: createUser
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: Usuario creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Email ya registrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users:
+    get:
+      summary: Obtener todos los usuarios
+      operationId: findAllUsers
+      tags: [Users]
+      responses:
+        "200":
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /users/{id}:
+    get:
+      summary: Obtener usuario por ID
+      operationId: findOneUser
+      tags: [Users]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID del usuario
+      responses:
+        "200":
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      summary: Actualizar un usuario
+      operationId: updateUser
+      tags: [Users]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID del usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserDto"
+      responses:
+        "200":
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      summary: Eliminar un usuario
+      operationId: deleteUser
+      tags: [Users]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID del usuario
+      responses:
+        "204":
+          description: Usuario eliminado (sin contenido)
+        "404":
+          description: Usuario no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identificador único del usuario
+        full_name:
+          type: string
+          description: Nombre completo del usuario
+        email:
+          type: string
+          format: email
+          description: Correo electrónico (único)
+        phone:
+          type: string
+          description: Número de teléfono
+        address:
+          type: string
+          description: Dirección física
+        city:
+          type: string
+          description: Ciudad
+        avatar_url:
+          type: string
+          format: uri
+          description: URL del avatar
+        client_number:
+          type: string
+          description: Número de cliente
+        status:
+          type: string
+          description: Estado del usuario (A=Activo, I=Inactivo)
+          default: A
+        createdAt:
+          type: string
+          format: date-time
+          description: Fecha de creación
+        updatedAt:
+          type: string
+          format: date-time
+          description: Fecha de última actualización
+      required:
+        - id
+        - full_name
+        - email
+        - city
+        - createdAt
+
+    CreateUserDto:
+      type: object
+      properties:
+        full_name:
+          type: string
+          description: Nombre completo del usuario
+        email:
+          type: string
+          format: email
+          description: Correo electrónico
+        phone:
+          type: string
+          minLength: 10
+          description: Número de teléfono
+        address:
+          type: string
+          description: Dirección física
+        city:
+          type: string
+          description: Ciudad
+        avatar_url:
+          type: string
+          format: uri
+          description: URL del avatar
+      required:
+        - full_name
+        - email
+        - city
+
+    UpdateUserDto:
+      type: object
+      properties:
+        full_name:
+          type: string
+          description: Nombre completo del usuario
+        email:
+          type: string
+          format: email
+          description: Correo electrónico
+        phone:
+          type: string
+          description: Número de teléfono
+        address:
+          type: string
+          description: Dirección física
+        city:
+          type: string
+          description: Ciudad
+        avatar_url:
+          type: string
+          format: uri
+          description: URL del avatar
+
+    HealthCheckResult:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, error, shutdown]
+        info:
+          type: object
+          properties:
+            database:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [up, down]
+        error:
+          type: object
+        details:
+          type: object
+          properties:
+            database:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [up, down]
+
+    ErrorResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          description: Código de estado HTTP
+        message:
+          type: string
+          description: Mensaje de error
+        service:
+          type: string
+          description: Nombre del servicio
+          example: ext-prac-ms-users
+        errors:
+          type: array
+          items:
+            type: string
+          description: Detalle de errores de validación
