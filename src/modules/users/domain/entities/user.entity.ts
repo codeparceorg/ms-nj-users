@@ -5,7 +5,6 @@ export class User {
     phone ?: string;
     address ?: string;
     city!: string;
-    createdAt?: Date;
     auth_token_id!: string;
 
     static create(full_name: string, email: string, phone: string, address: string, city: string, auth_token_id: string): User {

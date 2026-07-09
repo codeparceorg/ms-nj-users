@@ -196,6 +196,10 @@ components:
         city:
           type: string
           description: Ciudad
+        auth_token_id:
+          type: string
+          format: uuid
+          description: Identificador del token de autenticación asociado
         avatar_url:
           type: string
           format: uri
@@ -220,6 +224,7 @@ components:
         - full_name
         - email
         - city
+        - auth_token_id
         - createdAt
 
     CreateUserDto:
@@ -242,14 +247,15 @@ components:
         city:
           type: string
           description: Ciudad
-        avatar_url:
+        auth_token_id:
           type: string
-          format: uri
-          description: URL del avatar
+          format: uuid
+          description: Identificador del token de autenticación asociado
       required:
         - full_name
         - email
         - city
+        - auth_token_id
 
     UpdateUserDto:
       type: object
