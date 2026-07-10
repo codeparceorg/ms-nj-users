@@ -34,10 +34,10 @@ export class UserOrmEntity {
   @Column({ type: "char", length: "1", default: "A" })
   status!: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn( {name:"created_at"})
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn( {name:"updated_at"})
   updatedAt!: Date;
 
   @Column({ name: 'auth_token_id', type: 'uuid' })
