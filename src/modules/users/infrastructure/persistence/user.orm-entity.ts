@@ -34,8 +34,8 @@ export class UserOrmEntity {
   @Column({ type: "char", length: "1", default: "A" })
   status!: string;
 
-  @CreateDateColumn( {name:"created_ats"})
-  createdAt!: Date;
+  @CreateDateColumn( )
+  createdAS2t!: Date;
 
   @UpdateDateColumn( {name:"updated_at"})
   updatedAt!: Date;
