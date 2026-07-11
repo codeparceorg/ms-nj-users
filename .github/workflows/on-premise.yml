@@ -48,6 +48,7 @@ jobs:
       SVC_NAME: ${{ github.event.repository.name }}-svc
       NS: sis-${{ github.ref_name  }}-ms
       MS_PATH: users
+      MONITORING_PATH: /users/metrics
 
     steps:
       - uses: actions/checkout@v4
